@@ -190,7 +190,7 @@ int main(int argc, char **argv)
 	MPI_Comm_size(MPI_COMM_WORLD, &procSize);
 
 	int *array;
-	int arraySize = 100;
+	int arraySize = 1000000;
 	array = new int[arraySize];
 	double startTime, finishTime;
 
