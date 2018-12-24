@@ -49,17 +49,15 @@ void QuickSort(int *array, int arraySize, int rootProc) {
 
 	if (procRank == 0) {
 		size = arraySize;
-		MPI_Bcast(&size, 1, MPI_INT, 0, MPI_COMM_WORLD);
-		arrayNum = size / procSize;
 	}
-    // сообщение размера массива всем процессам
+    	// сообщение размера массива всем процессам
 	MPI_Bcast(&size, 1, MPI_INT, 0, MPI_COMM_WORLD);
 	arrayNum = size / procSize;
 
 	int diff = size - arrayNum * procSize;
 
 	int *scounts = new int[procSize];
-	for (int i = 0; i < procSize - 1; ++i)
+	for (int i = 0; i < procSize- 1; ++i)
 		scounts[i] = arrayNum;
 	scounts[procSize - 1] = arrayNum + diff;
 
@@ -74,11 +72,8 @@ void QuickSort(int *array, int arraySize, int rootProc) {
 	delete[] scounts;
 	delete[] displs;
 
-	// количество итераций деления гиперкуба, фактически это логарифм по основанию 2 от количества процессов
-	int iterationsNum = 0;
-	while ((1 << iterationsNum) != procSize && (1 << iterationsNum) < procSize) {
-		++iterationsNum;
-	}
+	// количество итераций деления гиперкуба (логарифм по основанию 2 от количества процессов)
+	int iterationsNum = static_cast<int>(log2(procSize));
 
 	int currentBit, stepMainOfCube, pairProcess, pivot;
 	for (int i = iterationsNum - 1; i >= 0; --i) {
